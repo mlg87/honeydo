@@ -1,53 +1,53 @@
-import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
+import React, { Component, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
+import { createContainer } from 'meteor/react-meteor-data'
 // collections
-import { Tasks } from '../api/tasks.js';
+import { Tasks } from '../api/tasks.js'
 // components
-import Task from './Task.jsx';
+import Task from './Task.jsx'
 
 // App component - represents the whole app
 class App extends Component {
   // need to set the state first
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       hideCompleted: false,
-    };
+    }
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault()
 
     // Find the text field via the React ref
-    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
+    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim()
 
     Tasks.insert({
       text,
       createdAt: new Date()
-    });
+    })
 
     // Clear form
-    ReactDOM.findDOMNode(this.refs.textInput).value = '';
+    ReactDOM.findDOMNode(this.refs.textInput).value = ''
   }
 
   toggleHideCompleted() {
     this.setState({
       hideCompleted: !this.state.hideCompleted,
-    });
+    })
   }
 
   // get the tasks on the dom
   renderTasks() {
-    let filteredTasks = this.props.tasks;
+    let filteredTasks = this.props.tasks
     // if hideCompleted is selected, only show incomplete tasks
     if (this.state.hideCompleted) {
-      filteredTasks = filteredTasks.filter(task => !task.checked);
+      filteredTasks = filteredTasks.filter(task => !task.checked)
     }
     return filteredTasks.map((task) => (
       <Task key={task._id} task={task} />
-    ));
+    ))
   }
 
   render() {
@@ -56,7 +56,7 @@ class App extends Component {
     return (
       <div className="container">
         <header>
-          <h1>Shit To Complete ({this.props.incompleteCount})</h1>
+          <h1>Tasks To Complete ({this.props.incompleteCount})</h1>
 
           <label className="hide-completed clickable">
             <input
@@ -83,18 +83,18 @@ class App extends Component {
           {this.renderTasks()}
         </ul>
       </div>
-    );
+    )
   }
 }
 
 App.propTypes = {
   tasks: PropTypes.array.isRequired,
   incompleteCount: PropTypes.number.isRequired
-};
+}
 
 export default createContainer(() => {
   return {
     tasks: Tasks.find({}, {sort: {createdAt: -1}}).fetch(),
     incompleteCount: Tasks.find({ checked: { $ne: true } }).count()
-  };
-}, App);
+  }
+}, App)

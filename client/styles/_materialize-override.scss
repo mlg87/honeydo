@@ -1,0 +1,27 @@
+nav {
+  height: 66px;
+  background-color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  transition: all .5s ease;
+
+  & .brand-logo {
+    color: black;
+  }
+
+  ul a {
+    color: black;
+
+    &:hover {
+      color: white;
+      background-color: black;
+    }
+  }
+}
+
+// the checkbox cant be changed so the label is made to look like a check mark,
+// so thats what needs to be styled
+.checkbox-blue[type="checkbox"]:checked + label:before {
+  border-right-color: $primary-blue;
+  border-bottom-color: $primary-blue;
+}
