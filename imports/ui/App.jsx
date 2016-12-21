@@ -5,6 +5,7 @@ import { createContainer } from 'meteor/react-meteor-data'
 import { Tasks } from '../api/tasks.js'
 // components
 import Task from './Task.jsx'
+import Modal from '../components/Modal.jsx'
 
 // App component - represents the whole app
 class App extends Component {
@@ -13,7 +14,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      hideCompleted: false,
+      hideCompleted: false
     }
   }
 
@@ -82,6 +83,7 @@ class App extends Component {
         <ul>
           {this.renderTasks()}
         </ul>
+        
       </div>
     )
   }

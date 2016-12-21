@@ -1,0 +1,40 @@
+.fader {
+    -moz-animation-name: divFader;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-duration: .5s;
+
+    -webkit-animation-name: divFader;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-duration: .5s;
+
+    animation-name: divFader;
+    animation-iteration-count: 1;
+    animation-duration: .5s;
+}
+
+@-moz-keyframes divFader {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes divFader {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes divFader {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
