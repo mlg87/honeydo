@@ -125,6 +125,10 @@ header .hide-completed {
 }
 
 /* utils */
+.clickable {
+  cursor: pointer;
+}
+
 .right {
   float: right;
 }
@@ -135,4 +139,18 @@ header .hide-completed {
 
 .text-right {
   text-align: right;
+}
+
+.task-added {
+  font-size: .7rem;
+  font-style: italic;
+  color: gray;
+}
+
+.margin-left-10 {
+  margin-left: 10px;
+}
+
+.hidden {
+  display: none;
 }

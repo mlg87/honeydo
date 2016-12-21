@@ -8,6 +8,15 @@ import Task from './Task.jsx';
 
 // App component - represents the whole app
 class App extends Component {
+  // need to set the state first
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hideCompleted: false,
+    };
+  }
+
   handleSubmit(event) {
     event.preventDefault();
 
@@ -23,18 +32,42 @@ class App extends Component {
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
   }
 
+  toggleHideCompleted() {
+    this.setState({
+      hideCompleted: !this.state.hideCompleted,
+    });
+  }
+
   // get the tasks on the dom
   renderTasks() {
-    return this.props.tasks.map((task) => (
+    let filteredTasks = this.props.tasks;
+    // if hideCompleted is selected, only show incomplete tasks
+    if (this.state.hideCompleted) {
+      filteredTasks = filteredTasks.filter(task => !task.checked);
+    }
+    return filteredTasks.map((task) => (
       <Task key={task._id} task={task} />
     ));
   }
 
   render() {
+    const completedPrompt = this.state.hideCompleted ? 'Show' : 'Hide'
+
     return (
       <div className="container">
         <header>
-          <h1>Todo List</h1>
+          <h1>Shit To Complete ({this.props.incompleteCount})</h1>
+
+          <label className="hide-completed clickable">
+            <input
+              className="hidden"
+              type="checkbox"
+              readOnly
+              checked={this.state.hideCompleted}
+              onClick={this.toggleHideCompleted.bind(this)}
+            />
+            {completedPrompt} Completed
+          </label>
 
           {/* events are handled in React by listening directly on the html comp */}
           <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
@@ -56,10 +89,12 @@ class App extends Component {
 
 App.propTypes = {
   tasks: PropTypes.array.isRequired,
+  incompleteCount: PropTypes.number.isRequired
 };
 
 export default createContainer(() => {
   return {
     tasks: Tasks.find({}, {sort: {createdAt: -1}}).fetch(),
+    incompleteCount: Tasks.find({ checked: { $ne: true } }).count()
   };
 }, App);
