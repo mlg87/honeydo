@@ -25,3 +25,6 @@ fourseven:scss
 poetic:materialize-scss
 static-html
 session
+accounts-ui
+accounts-password
+stevezhu:lodash

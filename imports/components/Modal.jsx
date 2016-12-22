@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 export default class Modal extends Component {
   // return an array of inputs for the modal
   renderInputs() {
-    console.log('what are the props', this.props);
+    const handleInputChange = this.props.handleInputChange
     return this.props.inputs.map((input) => (
       <div key={input.ref + 'Container'} className={'input-field col m' + input.mWidth + ' s' + input.sWidth}>
         <input
@@ -13,6 +13,7 @@ export default class Modal extends Component {
           ref={input.ref}
           key={input.ref + 'Input'}
           id={input.ref}
+          onChange={handleInputChange}
         />
         <label htmlFor={input.ref} key={input.ref + 'Label'}>
           {input.placeholder}
@@ -27,17 +28,19 @@ export default class Modal extends Component {
       return null
     }
 
-    console.log('rendering a modal');
+    console.log('rendering a modal.here are props:', this.props);
     // modal and modal backdrop are contained in a div so it doesnt
     // matter what parent they have
     return (
       <div>
-        <div id="modal1" className={this.props.modalClassName + " modal open"}>
+        <div className={this.props.modalClassName + " modal open"}>
           <div className="modal-content">
             <h4>{this.props.modalHeader}</h4>
-            <div className="row">
-              {this.renderInputs()}
-            </div>
+            <form>
+              <div className="row">
+                {this.renderInputs()}
+              </div>
+            </form>
           </div>
           <div className="modal-footer">
             <a className="modal-action modal-close waves-effect waves-red btn-flat" onClick={this.props.closeModal}>Cancel</a>
