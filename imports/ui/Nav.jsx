@@ -12,45 +12,32 @@ export default class Nav extends Component {
       isModalOpen: false
     }
 
-    this.toggleModal = this.toggleModal.bind(this)
+    // bind the context so this onClick can pass to NavButton
+    this.showModal = this.showModal.bind(this)
+    // bind the context so this onClick can pass to the Modal
+    this.closeModal = this.closeModal.bind(this)
   }
 
-  toggleModal(e) {
-    this.setState({isModalOpen: !this.state.isModalOpen})
+  showModal(e) {
+    if (this.state.isModalOpen === true) {
+      return false
+    }
+    this.setState({isModalOpen: true})
   }
 
-  // showModal(event) {
-  //   event.preventDefault()
-  //   console.log('state at the start of show modal', this.state);
-  //   // console.log('args', arguments);
-  //   // console.log('do we have props?', this.props);
-  //   // console.log('what is ref', this.refs);
-  //
-  //   // change the state
-  //   this.openModal()
-  //
-  //   this.setState({isModalOpen: true})
-  //   console.log('state after it should be set', this.state);
-  //
-  //   return (
-  //     <Modal modalHeader="Johnson" modalBody="dammit"/>
-  //   )
-  // }
-
-  openModal() {
-    Session.set('isModalOpen', true)
-  }
-
-  closeModal() {
-    Session.set('isModalOpen', false)
+  closeModal(e) {
+    if (this.state.isModalOpen === false) {
+      return false
+    }
+    // this slows down the closing of the modal so the user
+    // can see dope button animations
+    setTimeout(() => {
+        this.setState({isModalOpen: false})
+    }, 500);
   }
 
   renderNavButtons() {
     let navButtons = [
-      {
-        text: 'Modal',
-        target: 'modal1'
-      },
       {
         text: 'Create Account',
         target: 'createAccount'
@@ -62,8 +49,27 @@ export default class Nav extends Component {
     ]
 
     return navButtons.map((button) => (
-      <NavButton text={button.text} targetModal={button.target} onClick={this.toggleModal} key={button.target}/>
+      <NavButton text={button.text} targetModal={button.target} onClick={this.showModal} key={button.target}/>
     ))
+  }
+
+  getInputs() {
+    return [
+      {
+        type: 'text',
+        ref: 'username',
+        placeholder: 'Username',
+        mWidth: 6,
+        sWidth: 12
+      },
+      {
+        type: 'password',
+        ref: 'password',
+        placeholder: 'Password',
+        mWidth: 6,
+        sWidth: 12
+      }
+    ]
   }
 
   render() {
@@ -77,7 +83,7 @@ export default class Nav extends Component {
             </ul>
           </div>
         </nav>
-        <Modal isOpen={this.state.isModalOpen} modalHeader="Sign In" modalBody="Do it" modalClassName="modal-sign-in"/>
+        <Modal inputs={this.getInputs()} isOpen={this.state.isModalOpen} modalHeader="Sign In" modalClassName="modal-sign-in" closeModal={this.closeModal}/>
       </div>
     )
   }
