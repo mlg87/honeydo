@@ -5,7 +5,8 @@ export default class Modal extends Component {
   // return an array of inputs for the modal
   renderInputs() {
     const handleInputChange = this.props.handleInputChange
-    let errInput = this.props.err
+    let errInput = this.props.err.key
+    let errReason = this.props.err.reason
 
     return this.props.inputs.map((input) => (
       <div key={input.ref + 'Container'} className={'input-field col m' + input.mWidth + ' s' + input.sWidth}>
@@ -17,7 +18,7 @@ export default class Modal extends Component {
           id={input.ref}
           onChange={handleInputChange}
         />
-        <label htmlFor={input.ref} key={input.ref + 'Label'}>
+      <label htmlFor={input.ref} key={input.ref + 'Label'} data-error={`${input.ref === errInput ? errReason : ''}`}>
           {input.placeholder}
         </label>
       </div>

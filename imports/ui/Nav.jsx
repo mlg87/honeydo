@@ -17,7 +17,7 @@ export default class Nav extends Component {
       user: {},
       // err is either null or the key that has an err so the class
       // invalid can be added in the Modal
-      err: null
+      err: {}
     }
 
     // bind the context so this onClick can pass to the Modal
@@ -31,13 +31,14 @@ export default class Nav extends Component {
   }
 
   closeModal(e) {
+    console.log('closeModal running');
     if (this.state.modal.isModalOpen === false) {
       return false
     }
     // this slows down the closing of the modal so the user
     // can see dope button animations
     setTimeout(() => {
-        this.setState({modal: {isModalOpen: false}})
+        this.setState({modal: {isModalOpen: false}, err: {}})
     }, 500);
   }
 
@@ -48,6 +49,7 @@ export default class Nav extends Component {
       // bind the context on the cb so we can access Nav state
       Accounts.createUser(this.state.user, err => {
         if (err) {
+          const errReason = err.reason
           // new switch example
           const errKey = (() => {
             switch (err.reason) {
@@ -58,16 +60,44 @@ export default class Nav extends Component {
             }
           })();
           this.setState({
-            err: errKey
+            err: {
+              key: errKey,
+              reason: errReason
+            }
           })
-          // need to add invalid class to input
+          // break out and keep modal open
+          return false
         }
-
+        return this.closeModal()
       })
     }
     // attempt to signin existing user
     else {
-
+      // loginWithPassword takes a string for username and string
+      // for user pw
+      Meteor.loginWithPassword(this.state.user.username, this.state.user.password, err => {
+        if (err) {
+          const errReason = err.reason
+          // new switch example
+          const errKey = (() => {
+            switch (err.reason) {
+              case 'User not found':
+                return 'username';
+              case 'Incorrect password':
+                return 'password';
+            }
+          })();
+          this.setState({
+            err: {
+              key: errKey,
+              reason: errReason
+            }
+          })
+          // break out and keep modal open
+          return false
+        }
+        return this.closeModal()
+      })
     }
   }
 
@@ -111,12 +141,17 @@ export default class Nav extends Component {
       }
     ]
 
+    if (Meteor.user()) {
+      navButtons = []
+    }
+
     return navButtons.map((button) => (
       <NavButton text={button.text} targetModal={button.target} onClick={button.click} key={button.target}/>
     ))
   }
 
   getInputs() {
+    console.log('is there a meteor user', Meteor.user());
     let inputs = [
       {
         type: 'text',
@@ -151,8 +186,9 @@ export default class Nav extends Component {
     // to a dynamic key
     let userStateObj = _.cloneDeep(this.state.user)
     userStateObj[key] = e.target.value
-
-    return this.setState({user: userStateObj})
+    // by setting the err to an empty obj, err msgs on dom will
+    // go away
+    return this.setState({user: userStateObj, err:{}})
   }
 
   render() {
@@ -160,7 +196,7 @@ export default class Nav extends Component {
       <div>
         <nav>
           <div className="nav-wrapper">
-            <a className="brand-logo modal-trigger">Weaver-Goetz Household Tasks</a>
+            <a className="brand-logo modal-trigger">HoneyDo</a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               {this.renderNavButtons()}
             </ul>
