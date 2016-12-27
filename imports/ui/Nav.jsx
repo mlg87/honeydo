@@ -14,7 +14,10 @@ export default class Nav extends Component {
         modalHeader: null,
         targetModal: null
       },
-      user: {}
+      user: {},
+      // err is either null or the key that has an err so the class
+      // invalid can be added in the Modal
+      err: null
     }
 
     // bind the context so this onClick can pass to the Modal
@@ -42,8 +45,25 @@ export default class Nav extends Component {
     e.preventDefault()
 
     if (this.state.modal.targetModal === 'createAccount') {
-      let id = Accounts.createUser(this.state.user)
-      console.log('whats the id', id);
+      // bind the context on the cb so we can access Nav state
+      Accounts.createUser(this.state.user, err => {
+        if (err) {
+          // new switch example
+          const errKey = (() => {
+            switch (err.reason) {
+              case 'Username already exists.':
+                return 'username';
+              case 'Email already exists.':
+                return 'email';
+            }
+          })();
+          this.setState({
+            err: errKey
+          })
+          // need to add invalid class to input
+        }
+
+      })
     }
     // attempt to signin existing user
     else {
@@ -147,6 +167,7 @@ export default class Nav extends Component {
           </div>
         </nav>
         <Modal
+          err={this.state.err}
           inputs={this.getInputs()}
           isOpen={this.state.modal.isModalOpen}
           modalHeader={this.state.modal.modalHeader}

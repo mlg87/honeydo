@@ -5,10 +5,12 @@ export default class Modal extends Component {
   // return an array of inputs for the modal
   renderInputs() {
     const handleInputChange = this.props.handleInputChange
+    let errInput = this.props.err
+
     return this.props.inputs.map((input) => (
       <div key={input.ref + 'Container'} className={'input-field col m' + input.mWidth + ' s' + input.sWidth}>
         <input
-          className="validate"
+          className={`validate ${input.ref === errInput ? 'invalid' : ''}`}
           type={input.type}
           ref={input.ref}
           key={input.ref + 'Input'}
@@ -28,7 +30,6 @@ export default class Modal extends Component {
       return null
     }
 
-    console.log('rendering a modal.here are props:', this.props);
     // modal and modal backdrop are contained in a div so it doesnt
     // matter what parent they have
     return (
