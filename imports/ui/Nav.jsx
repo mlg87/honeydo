@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
+import { createContainer } from 'meteor/react-meteor-data'
 import Modal from '../components/Modal.jsx'
-import NavButton from '../components/buttons/NavButton.jsx'
+import NavButton from '../components/nav/NavButton.jsx'
 
-export default class Nav extends Component {
+class Nav extends Component {
   // always initially render with the modal 'hidden'
   constructor(props) {
     super(props)
@@ -28,10 +29,18 @@ export default class Nav extends Component {
     // to be what i wanted based on the click events
     this.renderModalSignIn = this.renderModalSignIn.bind(this)
     this.renderModalCreateAccount = this.renderModalCreateAccount.bind(this)
+    this.logout = this.logout.bind(this)
   }
 
+  // componentDidMount() {
+  //
+  // }
+  //
+  // componentWillUnmount() {
+  //
+  // }
+
   closeModal(e) {
-    console.log('closeModal running');
     if (this.state.modal.isModalOpen === false) {
       return false
     }
@@ -127,6 +136,15 @@ export default class Nav extends Component {
     })
   }
 
+  logout() {
+    Meteor.logout(err => {
+      if (err) {
+        return Alert(err.reason)
+      }
+      this.setState({loggedInUser: null})
+    })
+  }
+
   renderNavButtons() {
     let navButtons = [
       {
@@ -141,17 +159,36 @@ export default class Nav extends Component {
       }
     ]
 
-    if (Meteor.user()) {
-      navButtons = []
+    if (this.props.currentUser) {
+      navButtons = [
+        {
+          text: 'Hi, ' + this.props.currentUser.username,
+          target: 'accountMenu',
+          type: 'dropdown',
+          options: [
+            {
+              text: 'Profile',
+              click: console.log('take me to profile')
+            },
+            {
+              text: 'Lists',
+              click: console.log('take me to lists')
+            },
+            {
+              text: 'Log Out',
+              click: this.logout
+            }
+          ]
+        }
+      ]
     }
-
+    // always put the key on the component, not the root li
     return navButtons.map((button) => (
-      <NavButton text={button.text} targetModal={button.target} onClick={button.click} key={button.target}/>
+      <NavButton text={button.text} targetModal={button.target} onClick={button.click} key={button.target} buttonType={button.type} options={button.options}/>
     ))
   }
 
   getInputs() {
-    console.log('is there a meteor user', Meteor.user());
     let inputs = [
       {
         type: 'text',
@@ -202,17 +239,31 @@ export default class Nav extends Component {
             </ul>
           </div>
         </nav>
-        <Modal
-          err={this.state.err}
-          inputs={this.getInputs()}
-          isOpen={this.state.modal.isModalOpen}
-          modalHeader={this.state.modal.modalHeader}
-          modalClassName="modal-sign-in"
-          closeModal={this.closeModal}
-          submitModal={this.submitModal}
-          handleInputChange={this.handleInputChange}
-        />
+        {/*HACK: the modal was just hiding on the dom the way i
+          previously had this, so now dont render it unless isOpen*/}
+        {this.state.modal.isModalOpen &&
+          <Modal
+            err={this.state.err}
+            inputs={this.getInputs()}
+            isOpen={this.state.modal.isModalOpen}
+            modalHeader={this.state.modal.modalHeader}
+            modalClassName="modal-sign-in"
+            closeModal={this.closeModal}
+            submitModal={this.submitModal}
+            handleInputChange={this.handleInputChange}
+            />
+        }
       </div>
     )
   }
 }
+
+Nav.propTypes = {
+  currentUser: PropTypes.object
+}
+
+export default createContainer(() => {
+  return {
+    currentUser: Meteor.user()
+  }
+}, Nav)

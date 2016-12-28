@@ -51,3 +51,11 @@ input:focus:not([readonly]) {
   background-color: rgba(black, .5);
   z-index: 999;
 }
+
+.hidden {
+  display: none;
+}
+
+.block {
+  display: block;
+}

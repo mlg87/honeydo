@@ -2,6 +2,7 @@
 @import "{poetic:materialize-scss}/sass/materialize.scss";
 // internal
 @import "../styles/_vars.scss";
-@import "../styles/_materialize-override.scss";
+@import "../styles/_override.scss";
 @import "../styles/_animations.scss";
 @import "../styles/_general.scss";
+@import "../styles/_nav.scss"

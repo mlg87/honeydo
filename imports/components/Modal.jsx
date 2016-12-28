@@ -2,13 +2,17 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 
 export default class Modal extends Component {
+  componentDidMount() {
+
+  }
+
   // return an array of inputs for the modal
   renderInputs() {
     const handleInputChange = this.props.handleInputChange
     let errInput = this.props.err.key
     let errReason = this.props.err.reason
 
-    return this.props.inputs.map((input) => (
+    return this.props.inputs.map((input, i) => (
       <div key={input.ref + 'Container'} className={'input-field col m' + input.mWidth + ' s' + input.sWidth}>
         <input
           className={`validate ${input.ref === errInput ? 'invalid' : ''}`}
@@ -18,7 +22,7 @@ export default class Modal extends Component {
           id={input.ref}
           onChange={handleInputChange}
         />
-      <label htmlFor={input.ref} key={input.ref + 'Label'} data-error={`${input.ref === errInput ? errReason : ''}`}>
+        <label htmlFor={input.ref} key={input.ref + 'Label'} data-error={`${input.ref === errInput ? errReason : ''}`}>
           {input.placeholder}
         </label>
       </div>

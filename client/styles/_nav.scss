@@ -1,0 +1,16 @@
+// width will be caclulated when it is rendered
+.nav-dropdown-content {
+  position: absolute;
+  // 66 bc that is the height of the navbar
+  top: 66px;
+
+  & li {
+    display: block;
+    clear: both;
+    width: 100%;
+
+    & a {
+      width: 100%;
+    }
+  }
+}
