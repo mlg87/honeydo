@@ -5,20 +5,19 @@ import { Tasks } from '../api/tasks.js'
 // Task component - represents a single todo item
 export default class Task extends Component {
   toggleChecked() {
-    // Set the checked property to the opposite of its current value
-    Tasks.update(this.props.task._id, {
-      $set: { checked: !this.props.task.checked },
-    })
+    Meteor.call('tasks.check', this.props.task._id)
   }
 
   deleteTask() {
-    Tasks.remove(this.props.task._id)
+    Meteor.call('tasks.remove', this.props.task._id)
   }
 
   render() {
     // Give tasks a different className when they are checked off,
     // so that we can style them nicely in CSS
-    const taskClassName = this.props.task.checked ? 'checked' : ''
+    const taskClassName = this.props.task.isChecked ? 'checked' : ''
+    // id is used for materialze so the label works with
+    // the input
     const checkboxId = this.props.task._id + 'check'
 
     return (
@@ -32,7 +31,7 @@ export default class Task extends Component {
           id={checkboxId}
           type="checkbox"
           readOnly
-          checked={this.props.task.checked}
+          checked={this.props.task.isChecked}
         />
         <label
           htmlFor={checkboxId}

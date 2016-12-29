@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { createContainer } from 'meteor/react-meteor-data'
 // collections
-import { Tasks } from '../api/tasks.js'
+import { Tasks } from '../api/tasks'
 // components
-import Task from './Task.jsx'
+import Task from './Task'
 
 // App component - represents the whole app
 class TaskBoard extends Component {
@@ -23,11 +23,10 @@ class TaskBoard extends Component {
     // Find the text field via the React ref
     const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim()
 
-    Tasks.insert({
-      text,
-      createdAt: new Date(),
-      userId: Meteor.userId(),
-      username: Meteor.user().username
+    Meteor.call('tasks.insert', text, function(err, id) {
+      if (err) {
+        alert(err.reason.reason)
+      }
     })
 
     // Clear form

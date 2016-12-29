@@ -16,8 +16,20 @@ const routes = {
   component: AppLayout,
   indexRoute: { component: TaskBoard },
   childRoutes: [
-    { path: 'profile', component: ProfilePage },
-    { path: '*', component: NotFound}
+    {
+      path: 'profile',
+      component: ProfilePage
+    },
+    {
+      path: 'logout',
+      onEnter: ({params}, replace) => {
+        Meteor.logout()
+        replace('/')
+      }
+    },
+    {
+      path: '*',
+      component: NotFound}
     // {
     //   path: 'inbox',
     //   component: Inbox,
