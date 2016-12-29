@@ -16,6 +16,11 @@ nav {
       color: white;
       background-color: black;
     }
+
+    &.active {
+      color: white;
+      background-color: lighten($color-primary-blue, 30%);
+    }
   }
 }
 

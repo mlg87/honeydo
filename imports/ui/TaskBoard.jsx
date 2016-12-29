@@ -5,10 +5,9 @@ import { createContainer } from 'meteor/react-meteor-data'
 import { Tasks } from '../api/tasks.js'
 // components
 import Task from './Task.jsx'
-import Modal from '../components/Modal.jsx'
 
 // App component - represents the whole app
-class App extends Component {
+class TaskBoard extends Component {
   // need to set the state first
   constructor(props) {
     super(props)
@@ -49,7 +48,7 @@ class App extends Component {
       filteredTasks = filteredTasks.filter(task => !task.checked)
     }
     return filteredTasks.map((task) => (
-      <Task key={task._id} task={task} />
+      <Task key={ task._id } task={ task } />
     ))
   }
 
@@ -57,23 +56,23 @@ class App extends Component {
     const completedPrompt = this.state.hideCompleted ? 'Show' : 'Hide'
 
     return (
-      <div className="container">
+      <div>
         <header>
-          <h1>Tasks To Complete ({this.props.incompleteCount})</h1>
+          <h1>Tasks To Complete ({ this.props.incompleteCount })</h1>
 
           <label className="hide-completed clickable">
             <input
               className="hidden"
               type="checkbox"
               readOnly
-              checked={this.state.hideCompleted}
-              onClick={this.toggleHideCompleted.bind(this)}
+              checked={ this.state.hideCompleted }
+              onClick={ this.toggleHideCompleted.bind(this) }
             />
-            {completedPrompt} Completed
+            { completedPrompt } Completed
           </label>
 
           {/* events are handled in React by listening directly on the html comp */}
-          {this.props.currentUser &&
+          { this.props.currentUser &&
             <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
               <input
                 type="text"
@@ -85,7 +84,7 @@ class App extends Component {
         </header>
 
         <ul>
-          {this.renderTasks()}
+          { this.renderTasks() }
         </ul>
 
       </div>
@@ -93,7 +92,7 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
+TaskBoard.propTypes = {
   tasks: PropTypes.array.isRequired,
   incompleteCount: PropTypes.number.isRequired,
   currentUser: PropTypes.object
@@ -105,4 +104,4 @@ export default createContainer(() => {
     incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
     currentUser: Meteor.user()
   }
-}, App)
+}, TaskBoard)

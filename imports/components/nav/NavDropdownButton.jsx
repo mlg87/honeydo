@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 // Measure makes setting the coordinates for the dropdown
 // stupid easy
 import Measure from 'react-measure'
+// creates route components
+import { IndexLink, Link } from 'react-router'
 
 export default class NavDropdownButton extends Component {
   constructor(props) {
@@ -27,9 +29,10 @@ export default class NavDropdownButton extends Component {
 
     return this.props.options.map((option) => (
       <li key={option.text.toString()}>
-        <a onClick={option.click}>
-          {option.text}
-        </a>
+        {option.path === '/' ?
+          <IndexLink to={option.path} activeClassName="active">{option.text}</IndexLink> :
+          <Link to={option.path} activeClassName="active">{option.text}</Link>
+        }
       </li>
     ))
   }

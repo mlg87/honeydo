@@ -28,5 +28,3 @@ session
 accounts-ui
 accounts-password
 stevezhu:lodash
-kadira:flow-router
-kadira:flow-router-ssr

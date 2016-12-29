@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { createContainer } from 'meteor/react-meteor-data'
-import Modal from '../components/Modal.jsx'
+
+import { Modal } from '../components/Modal.jsx'
 import NavButton from '../components/nav/NavButton.jsx'
 
 class Nav extends Component {
@@ -167,16 +168,20 @@ class Nav extends Component {
           type: 'dropdown',
           options: [
             {
+              text: 'Task Board',
+              path: '/'
+            },
+            {
               text: 'Profile',
-              click: console.log('take me to profile')
+              path: '/profile'
             },
             {
               text: 'Lists',
-              click: console.log('take me to lists')
+              path: '/lists'
             },
             {
               text: 'Log Out',
-              click: this.logout
+              path: '/logout'
             }
           ]
         }

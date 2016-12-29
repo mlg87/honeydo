@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 
-export default class Modal extends Component {
+export class Modal extends Component {
   componentDidMount() {
 
   }
