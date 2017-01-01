@@ -146,3 +146,18 @@ header .hide-completed {
 .hidden {
   display: none;
 }
+
+// list classes
+.list-delete {
+  @extend .delete;
+  font-size: 2em;
+}
+
+.user-item-delete {
+  @extend .delete;
+  float: none;
+}
+
+.user-item {
+  border-bottom: none;
+}

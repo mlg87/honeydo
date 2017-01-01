@@ -18,3 +18,25 @@ export const _Base = Class.create({
     }
   }
 })
+
+export const _user = Class.create({
+  name: '_user',
+  fields: {
+    userId: {
+      type: String,
+      validators: [
+        {
+          type: 'required'
+        }
+      ]
+    },
+    username: {
+      type: String,
+      validators: [
+        {
+          type: 'required'
+        }
+      ]
+    }
+  }
+})

@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-// collection
-import { Tasks } from '../api/tasks.js'
 
 // Task component - represents a single todo item
 export default class Task extends Component {
@@ -22,23 +20,26 @@ export default class Task extends Component {
 
     return (
       <li className={taskClassName + ' fader'}>
-        <button className="delete clickable" onClick={this.deleteTask.bind(this)}>
+
+        <button className="delete clickable" onClick={ this.deleteTask.bind(this) }>
           &times;
         </button>
 
         <input
           className="clickable checkbox-blue"
-          id={checkboxId}
+          id={ checkboxId }
           type="checkbox"
           readOnly
-          checked={this.props.task.isChecked}
-        />
-        <label
-          htmlFor={checkboxId}
-          onClick={this.toggleChecked.bind(this)}
+          checked={ this.props.task.isChecked }
         />
 
-        <span className="text">{this.props.task.text}</span><span className="task-added margin-left-10">{moment(this.props.task.createdAt).format('k:mm MM/DD/YYYY')}</span>
+        <label
+          htmlFor={ checkboxId }
+          onClick={ this.toggleChecked.bind(this) }
+        />
+
+        <span className="text">{ this.props.task.text }</span><span className="task-added margin-left-10">{ moment(this.props.task.createdAt).format('k:mm MM/DD/YYYY') }</span>
+
       </li>
     )
   }
@@ -47,5 +48,5 @@ export default class Task extends Component {
 Task.propTypes = {
   // This component gets the task to display through a React prop.
   // We can use propTypes to indicate it is required
-  task: PropTypes.object.isRequired,
+  task: PropTypes.object.isRequired
 }

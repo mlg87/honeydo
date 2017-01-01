@@ -17,12 +17,14 @@ class TaskBoard extends Component {
     }
   }
 
-  handleSubmit(event) {
-    event.preventDefault()
+  handleSubmit(e) {
+    e.preventDefault()
 
     // Find the text field via the React ref
     const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim()
 
+    // dont use arrow function here b/c we dont want it to bind
+    // to react
     Meteor.call('tasks.insert', text, function(err, id) {
       if (err) {
         alert(err.reason.reason)
@@ -44,7 +46,7 @@ class TaskBoard extends Component {
     let filteredTasks = this.props.tasks
     // if hideCompleted is selected, only show incomplete tasks
     if (this.state.hideCompleted) {
-      filteredTasks = filteredTasks.filter(task => !task.checked)
+      filteredTasks = filteredTasks.filter(task => !task.isChecked)
     }
     return filteredTasks.map((task) => (
       <Task key={ task._id } task={ task } />
@@ -56,34 +58,53 @@ class TaskBoard extends Component {
 
     return (
       <div>
-        <header>
-          <h1>Tasks To Complete ({ this.props.incompleteCount })</h1>
 
-          <label className="hide-completed clickable">
-            <input
-              className="hidden"
-              type="checkbox"
-              readOnly
-              checked={ this.state.hideCompleted }
-              onClick={ this.toggleHideCompleted.bind(this) }
-            />
-            { completedPrompt } Completed
-          </label>
+        { this.props.currentUser ?
 
-          {/* events are handled in React by listening directly on the html comp */}
-          { this.props.currentUser &&
+          <header>
+
+            <h1>Tasks To Complete ({ this.props.incompleteCount })</h1>
+
+            <label className="hide-completed clickable">
+
+              <input
+                className="hidden"
+                type="checkbox"
+                readOnly
+                checked={ this.state.hideCompleted }
+                onClick={ this.toggleHideCompleted.bind(this) }
+                />
+              { completedPrompt } Completed
+
+            </label>
+
+            {/* events are handled in React by listening directly on the html comp */}
             <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
+
               <input
                 type="text"
                 ref="textInput"
                 placeholder="Type to add new tasks"
-              />
+                />
+
             </form>
-          }
-        </header>
+
+          </header>
+
+          :
+
+          <header>
+
+            <h1>Sign in or create an account to bang out some tasks...</h1>
+
+          </header>
+
+        }
 
         <ul>
+
           { this.renderTasks() }
+
         </ul>
 
       </div>
@@ -100,7 +121,7 @@ TaskBoard.propTypes = {
 export default createContainer(() => {
   return {
     tasks: Tasks.find({userId: Meteor.userId()}, {sort: {createdAt: -1}}).fetch(),
-    incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
+    incompleteCount: Tasks.find({userId: Meteor.userId(), isChecked: { $ne: true } }).count(),
     currentUser: Meteor.user()
   }
 }, TaskBoard)

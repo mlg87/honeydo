@@ -7,7 +7,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { AppLayout } from '../../ui/layouts/AppLayout'
 // components
 import TaskBoard from '../../ui/TaskBoard'
-import ProfilePage from '../../ui/ProfilePage'
+import ListBoard from '../../ui/ListBoard.jsx'
 // not found
 import { NotFound } from '../../ui/pages/not-found'
 
@@ -17,8 +17,8 @@ const routes = {
   indexRoute: { component: TaskBoard },
   childRoutes: [
     {
-      path: 'profile',
-      component: ProfilePage
+      path: 'lists',
+      component: ListBoard
     },
     {
       path: 'logout',
@@ -30,20 +30,6 @@ const routes = {
     {
       path: '*',
       component: NotFound}
-    // {
-    //   path: 'inbox',
-    //   component: Inbox,
-    //   childRoutes: [{
-    //     path: 'messages/:id',
-    //     onEnter: ({ params }, replace) => replace(`/messages/${params.id}`)
-    //   }]
-    // },
-    // {
-    //   component: Inbox,
-    //   childRoutes: [{
-    //     path: 'messages/:id', component: Message
-    //   }]
-    // }
   ]
 }
 
@@ -60,7 +46,7 @@ Meteor.startup( () => {
 //     <Router history={ browserHistory }>
 //       <Route path='/' component={ AppLayout }>
 //         <IndexRoute component={ TaskBoard } />
-//         <Route path='/profile' component={ ProfilePage } />
+//         <Route path='/profile' component={ ListBoard } />
 //         {/* similar to express, this 404 route needs to be the last route (its a last resort) */}
 //         <Route path='*' component={ NotFound } />
 //       </Route>

@@ -1,0 +1,33 @@
+@for $num from 0 through 40 {
+  .padding-left-#{$num} {
+    padding-left: #{$num}px;
+  }
+
+  .padding-right-#{$num} {
+    padding-right: #{$num}px;
+  }
+
+  .padding-top-#{$num} {
+    padding-top: #{$num}px;
+  }
+
+  .padding-bottom-#{$num} {
+    padding-bottom: #{$num}px;
+  }
+
+  .margin-left-#{$num} {
+    margin-left: #{$num}px;
+  }
+
+  .margin-right-#{$num} {
+    margin-right: #{$num}px;
+  }
+
+  .margin-top-#{$num} {
+    margin-top: #{$num}px;
+  }
+
+  .margin-bottom-#{$num} {
+    margin-bottom: #{$num}px;
+  }
+}

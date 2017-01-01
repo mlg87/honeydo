@@ -172,10 +172,6 @@ class Nav extends Component {
               path: '/'
             },
             {
-              text: 'Profile',
-              path: '/profile'
-            },
-            {
               text: 'Lists',
               path: '/lists'
             },
