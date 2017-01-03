@@ -12,6 +12,11 @@ export class List extends Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      isAddingUsers: false
+    }
+
+    this.addUsers = this.addUsers.bind(this)
     this.addUserToList = this.addUserToList.bind(this)
   }
 
@@ -34,6 +39,10 @@ export class List extends Component {
     Meteor.call('lists.remove', this.props.list._id)
   }
 
+  addUsers() {
+    this.setState({isAddingUsers: true})
+  }
+
   getOptionsForUserSelect() {
     return this.props.users.map((user) => {
       return {
@@ -46,10 +55,24 @@ export class List extends Component {
   // takes an arr of user _ids
   addUserToList(userIds) {
     Meteor.call('lists.addUsers', this.props.list._id, userIds)
+    // reset the state which will ge the MultiSelect off dom
+    this.setState({isAddingUsers: false})
   }
 
   render() {
     const users = this.props.list.users
+    // HACK: im calling this a hack b/c it took a year to
+    // piece together, but its actually quite clever
+    let renderMultiSelect = undefined
+    if (this.state.isAddingUsers) {
+      renderMultiSelect = <MultiSelect
+        placeholder='Choose user(s) to add'
+        label='Share list'
+        onSubmit={ this.addUserToList }
+        options={ this.getOptionsForUserSelect() }
+        submitPrompt='Add'
+      />
+    }
 
     return (
       <li className='fader'>
@@ -77,21 +100,21 @@ export class List extends Component {
 
         <div className='margin-left-15'>
 
+          { !this.state.isAddingUsers &&
+
+            <a className='clickable' onClick={ this.addUsers }>add users to list</a>
+
+          }
+
           { this.props.isLoading ?
 
             <p>fetching users...</p> :
 
-              <MultiSelect
-                placeholder='Choose user(s) to add'
-                label='Share list'
-                onSubmit={ this.addUserToList }
-                options={ this.getOptionsForUserSelect() }
-                submitPrompt='Add'
-                />
-            }
+            renderMultiSelect
+
+          }
 
         </div>
-
 
       </li>
     )
@@ -117,18 +140,3 @@ export default ListContainer = createContainer(({ params }) => {
 
   return { isLoading, users }
 }, List)
-
-//
-// export default ListPageContainer = createContainer(({ params }) => {
-//   const { id } = params;
-//   const todosHandle = Meteor.subscribe('todos.inList', id);
-//   const loading = !todosHandle.ready();
-//   const list = Lists.findOne(id);
-//   const listExists = !loading && !!list;
-//   return {
-//     loading,
-//     list,
-//     listExists,
-//     todos: listExists ? list.todos().fetch() : [],
-//   };
-// }, ListPage);

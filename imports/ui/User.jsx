@@ -6,7 +6,6 @@ export class User extends Component {
   }
 
   render() {
-    console.log('what is the user', this.props.user);
     return (
       <li className='user-item'>
 
