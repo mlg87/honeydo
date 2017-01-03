@@ -40,3 +40,11 @@ export const _user = Class.create({
     }
   }
 })
+
+export const _email = Class.create({
+  name: '_email',
+  fields: {
+    address: String,
+    verified: Boolean
+  }
+})

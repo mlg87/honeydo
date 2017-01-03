@@ -5,12 +5,14 @@ import { createContainer } from 'meteor/react-meteor-data'
 import { Lists } from '../api/lists'
 // components
 import { List } from './List'
+import ListContainer from './List'
 
 export class ListBoard extends Component {
   renderLists() {
     let lists = this.props.lists
     return lists.map((list) => (
-      <List key={ list._id } list={ list } />
+      // <List key={ list._id } list={ list } />
+      <ListContainer params={ list.users.map((user) => user.userId) } key={ list._id } list={ list } />
     ))
   }
 
@@ -73,7 +75,9 @@ ListBoard.propTypes = {
   lists: PropTypes.array.isRequired
 }
 
-export default createContainer(() => {
+export default ListBoardContainer = createContainer(() => {
+  Meteor.subscribe('lists', Meteor.userId())
+
   return {
     lists: Lists.find({'users.userId': {$in: [Meteor.userId()]}}).fetch(),
     currentUser: Meteor.user()

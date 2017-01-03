@@ -38,6 +38,11 @@ input:focus:not([readonly]) {
   + label.active {
     color: $color-primary-blue !important;
   }
+
+  &.no-focus-state {
+    border-bottom: none !important;
+    box-shadow: none !important;
+  }
 }
 
 .modal.open {
@@ -64,3 +69,24 @@ input:focus:not([readonly]) {
 .block {
   display: block;
 }
+
+.relative {
+  position: relative;
+}
+
+.dropdown-content li > span {
+  color: black;
+}
+
+// checkbox for MultiSelect
+[type="checkbox"]:checked + label:before {
+  border-right-color: $color-primary-blue;
+  border-bottom-color: $color-primary-blue;
+
+}
+//
+// .no-focus-state {
+//   background-color: red;
+//   border-bottom: none !important;
+//   box-shadow: none !important;
+// }

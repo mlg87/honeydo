@@ -53,18 +53,25 @@ export default class NavDropdownButton extends Component {
   render() {
     return (
       <div className="nav-dropdown-container">
+
         <Measure onMeasure={(dimensions) => this.setState({dropdownWidth: dimensions.width})}>
+
           <li>
+
             <a className="dropdown-button" onClick={this.toggleDropdown}>
               {this.props.text} <i className="material-icons right">{this.getDropArrow()}</i>
             </a>
+
           </li>
+
         </Measure>
+
         {this.state.isDropdownOpen &&
           <ul className="nav-dropdown-content" style={this.getNavDropdownContentStyle()}>
             {this.renderOptions()}
           </ul>
         }
+
       </div>
     )
   }

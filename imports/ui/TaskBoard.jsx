@@ -119,6 +119,8 @@ TaskBoard.propTypes = {
 }
 
 export default createContainer(() => {
+  Meteor.subscribe('tasks')
+
   return {
     tasks: Tasks.find({userId: Meteor.userId()}, {sort: {createdAt: -1}}).fetch(),
     incompleteCount: Tasks.find({userId: Meteor.userId(), isChecked: { $ne: true } }).count(),

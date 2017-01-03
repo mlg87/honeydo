@@ -7,7 +7,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { AppLayout } from '../../ui/layouts/AppLayout'
 // components
 import TaskBoard from '../../ui/TaskBoard'
-import ListBoard from '../../ui/ListBoard.jsx'
+import ListBoardContainer from '../../ui/ListBoard'
 // not found
 import { NotFound } from '../../ui/pages/not-found'
 
@@ -18,7 +18,7 @@ const routes = {
   childRoutes: [
     {
       path: 'lists',
-      component: ListBoard
+      component: ListBoardContainer
     },
     {
       path: 'logout',

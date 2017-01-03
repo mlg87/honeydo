@@ -23,7 +23,6 @@ export const List = _Base.inherit({
       optional: true,
       default: []
     },
-    // arr of userIds
     // not optional, bc there must be at least one user
     users: {
       type: [_user],

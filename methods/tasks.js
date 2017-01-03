@@ -35,6 +35,7 @@ Meteor.methods({
     if (!this.userId) {
       throw new Meteor.Error('not-authorized')
     }
+
     const task = Task.findOne({_id: taskId})
     if (!task) {
       throw new Meteor.Error('not-found')
@@ -49,6 +50,7 @@ Meteor.methods({
     if (!this.userId) {
       throw new Meteor.Error('not-authorized')
     }
+
     const task = Task.findOne({_id: taskId})
     if (!task) {
       throw new Meteor.Error('not-found')

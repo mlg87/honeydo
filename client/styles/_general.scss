@@ -161,3 +161,13 @@ header .hide-completed {
 .user-item {
   border-bottom: none;
 }
+
+.btn-flat-standard {
+  transition: all .5s ease;
+  color: black;
+
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+}

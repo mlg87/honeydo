@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { createContainer } from 'meteor/react-meteor-data'
 
-import { Modal } from '../components/Modal.jsx'
-import NavButton from '../components/nav/NavButton.jsx'
+import { Modal } from '../components/Modal'
+import NavButton from '../components/nav/NavButton'
 
 class Nav extends Component {
   // always initially render with the modal 'hidden'
@@ -41,7 +41,7 @@ class Nav extends Component {
   //
   // }
 
-  closeModal(e) {
+  closeModal() {
     if (this.state.modal.isModalOpen === false) {
       return false
     }
