@@ -6,6 +6,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 // app container
 import { AppLayout } from '../../ui/layouts/AppLayout'
 // components
+import HomeBoardContainer from '../../ui/HomeBoard'
 import TaskBoardContainer from '../../ui/TaskBoard'
 import ListBoardContainer from '../../ui/ListBoard'
 // not found
@@ -15,7 +16,7 @@ const routes = {
   path: '/',
   component: AppLayout,
   indexRoute: {
-    component: NotFound,
+    component: HomeBoardContainer,
   },
   childRoutes: [
     {
@@ -54,7 +55,7 @@ Meteor.startup( () => {
 
       <Route path='/' component={ AppLayout }>
 
-        <IndexRoute component={ NotFound } />
+        <IndexRoute component={ HomeBoardContainer } />
 
         <Route path='/tasks' component={ TaskBoardContainer } />
 

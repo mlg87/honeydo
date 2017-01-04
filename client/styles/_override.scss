@@ -84,9 +84,12 @@ input:focus:not([readonly]) {
   border-bottom-color: $color-primary-blue;
 
 }
-//
-// .no-focus-state {
-//   background-color: red;
-//   border-bottom: none !important;
-//   box-shadow: none !important;
-// }
+
+button:focus {
+  color: white;
+  background-color: $color-primary-blue;
+}
+
+input {
+  border-bottom: none !important;
+}

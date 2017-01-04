@@ -37,7 +37,9 @@ Meteor.methods({
     Task.remove({_id: {$in: [list.tasks]}})
     list.remove()
   },
+  // taks an arr of userIds to batch add them to a list
   'lists.addUsers' (listId, userIds) {
+    check(listId, String)
     check(userIds, [String])
     // err if user not logged in
     if (!this.userId) {
@@ -58,6 +60,24 @@ Meteor.methods({
     const newUsersArr = list.users.concat(_users)
 
     list.set('users', newUsersArr)
+    list.save()
+  },
+  'lists.removeUser' (listId, userId) {
+    check(listId, String)
+    check(userId, String)
+    // err if user not logged in
+    if (!this.userId) {
+      throw new Meteor.Error('not-authorized')
+    }
+
+    const list = List.findOne({_id: listId})
+    if (!list) {
+      throw new Meteor.Error('not-found')
+    }
+
+    let _users = _.cloneDeep(list.users)
+    _.pullAllBy(_users, [{userId: userId}], 'userId')
+    list.set('users', _users)
     list.save()
   }
 })

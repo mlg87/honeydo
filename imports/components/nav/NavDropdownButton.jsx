@@ -37,7 +37,7 @@ export default class NavDropdownButton extends Component {
           >{ option.text }</IndexLink> :
 
           <Link
-            to={{ pathname: option.path, query: option.query }}
+            to={{ pathname: option.path, query: option.query, params: option.params }}
             activeClassName="active"
           >{ option.text }</Link>
         }

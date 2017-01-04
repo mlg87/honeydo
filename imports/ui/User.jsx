@@ -1,8 +1,22 @@
 import React, { Component, PropTypes } from 'react'
 
 export class User extends Component {
+  constructor(props) {
+    super(props)
+
+    this.deleteUserFromList = this.deleteUserFromList.bind(this)
+  }
+
   componentDidMount() {
     $('.tooltipped').tooltip({delay: 50})
+  }
+
+  componentWillUnmount() {
+    $('.tooltipped').tooltip('remove')
+  }
+
+  deleteUserFromList() {
+    Meteor.call('lists.removeUser', this.props.listId, this.props.user.userId)
   }
 
   render() {
@@ -13,6 +27,7 @@ export class User extends Component {
 
         <button
           className='user-item-delete clickable tooltipped'
+          onClick={ this.deleteUserFromList }
           data-position='top'
           data-delay='50'
           data-tooltip={'Remove ' + this.props.user.username + ' from the list'}
@@ -26,5 +41,6 @@ export class User extends Component {
 }
 
 User.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  listId: PropTypes.string.isRequired
 }

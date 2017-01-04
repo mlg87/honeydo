@@ -28,10 +28,9 @@ export class List extends Component {
     $('.tooltipped').tooltip('remove')
   }
 
-  // not sure why the fuck this wont work?
-  renderUsers(users) {
+  renderUsers(users, listId) {
     return users.map((user) => {
-      <User key={ user.userId } user={ user } />
+      return <User key={ user.userId } user={ user } listId={ listId } />
     })
   }
 
@@ -60,6 +59,7 @@ export class List extends Component {
   }
 
   render() {
+    const listId = this.props.list._id
     const users = this.props.list.users
     // HACK: im calling this a hack b/c it took a year to
     // piece together, but its actually quite clever
@@ -92,9 +92,7 @@ export class List extends Component {
 
         <ul>
 
-          { users.map((user) =>
-            <User key={ user.userId} user={ user } />
-          )}
+          { this.renderUsers(users, listId) }
 
         </ul>
 
