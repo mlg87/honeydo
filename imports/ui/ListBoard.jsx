@@ -21,7 +21,6 @@ export class ListBoard extends Component {
 
     // Find the text field via the React ref
     const listName = ReactDOM.findDOMNode(this.refs.listInput).value.trim()
-    console.log('listName', listName);
     // dont use arrow function here b/c we dont want it to bind
     // to react
     Meteor.call('lists.insert', listName, function(err, id) {

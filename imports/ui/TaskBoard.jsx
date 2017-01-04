@@ -20,7 +20,6 @@ class TaskBoard extends Component {
       selectedList: new ReactiveVar()
     }
 
-    this.handleListChange = this.handleListChange.bind(this)
     this.onSingleSelectMount = this.onSingleSelectMount.bind(this)
   }
 
@@ -74,11 +73,6 @@ class TaskBoard extends Component {
         placeholder: list.name
       }
     })
-  }
-
-  handleListChange(list) {
-    console.log('we are changing', list);
-    this.props.setListId(list)
   }
 
   onSingleSelectMount() {
