@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { createContainer } from 'meteor/react-meteor-data'
-
+// components
 import { Modal } from '../components/Modal'
 import NavButton from '../components/nav/NavButton'
+// route component
+import { Link } from 'react-router'
 
 class Nav extends Component {
   // always initially render with the modal 'hidden'
@@ -33,13 +35,9 @@ class Nav extends Component {
     this.logout = this.logout.bind(this)
   }
 
-  // componentDidMount() {
-  //
-  // }
-  //
-  // componentWillUnmount() {
-  //
-  // }
+  componentDidMount() {
+    $('.button-collapse').sideNav()
+  }
 
   closeModal() {
     if (this.state.modal.isModalOpen === false) {
@@ -236,17 +234,44 @@ class Nav extends Component {
   render() {
     return (
       <div>
+
         <nav>
+
           <div className="nav-wrapper">
-            <a className="brand-logo modal-trigger">HoneyDo</a>
+
+            <Link className='brand-logo' to='/'>HoneyDo</Link>
+
+            <a data-activates='mobile-menu' className='button-collapse clickable'>
+
+              <i className='material-icons'>
+
+                menu
+
+              </i>
+
+            </a>
+
             <ul id="nav-mobile" className="right hide-on-med-and-down">
-              {this.renderNavButtons()}
+
+              { this.renderNavButtons() }
+
             </ul>
+
+            <ul id='mobile-menu' className='side-nav'>
+
+              { this.renderNavButtons() }
+
+            </ul>
+
           </div>
+
         </nav>
+
         {/*HACK: the modal was just hiding on the dom the way i
           previously had this, so now dont render it unless isOpen*/}
-        {this.state.modal.isModalOpen &&
+
+        { this.state.modal.isModalOpen &&
+
           <Modal
             err={this.state.err}
             inputs={this.getInputs()}
@@ -256,12 +281,26 @@ class Nav extends Component {
             closeModal={this.closeModal}
             submitModal={this.submitModal}
             handleInputChange={this.handleInputChange}
-            />
+          />
+
         }
+
       </div>
     )
   }
 }
+
+// <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+// <ul id="nav-mobile" class="right hide-on-med-and-down">
+//   <li><a href="sass.html">Sass</a></li>
+//   <li><a href="badges.html">Components</a></li>
+//   <li><a href="collapsible.html">JavaScript</a></li>
+// </ul>
+// <ul class="side-nav" id="mobile-demo">
+//   <li><a href="sass.html">Sass</a></li>
+//   <li><a href="badges.html">Components</a></li>
+//   <li><a href="collapsible.html">JavaScript</a></li>
+// </ul>
 
 Nav.propTypes = {
   currentUser: PropTypes.object

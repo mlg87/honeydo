@@ -60,6 +60,23 @@ Meteor.methods({
     task.set({
       isChecked: !task.isChecked
     })
+    // if the task is now completed, add user who completed it, otherwise
+    // set to null
+    if (task.isChecked) {
+      const user = Meteor.user()
+      task.set({
+        completedAt: new Date(),
+        completedBy: user.username,
+        completedByUserId: user.userId
+      })
+    } else {
+      task.set({
+        completedAt: null,
+        completedBy: null,
+        completedByUserId: null
+      })
+    }
+
     task.save((err) => {
       if (err) {
         throw new Meteor.Error('not-valid', err)

@@ -46,6 +46,19 @@ export const Task = _Base.inherit({
     isChecked: {
       type: Boolean,
       default: false
+    },
+    completedAt: {
+      type: Date,
+      optional: true
+    },
+    // username
+    completedBy: {
+      type: String,
+      optional: true
+    },
+    completedByUserId: {
+      type: String,
+      optional: true
     }
   }
 });

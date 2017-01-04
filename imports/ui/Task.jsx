@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { colors } from '../styles/colors'
 
 // Task component - represents a single todo item
 export default class Task extends Component {
@@ -17,6 +18,11 @@ export default class Task extends Component {
     // id is used for materialze so the label works with
     // the input
     const checkboxId = this.props.task._id + 'check'
+    const completedStyle = {
+      marginLeft: '10px',
+      fontSize: '1rem',
+      color: colors.completed
+    }
 
     return (
       <li className={taskClassName + ' fader'}>
@@ -38,11 +44,15 @@ export default class Task extends Component {
           onClick={ this.toggleChecked.bind(this) }
         />
 
-        <span className="text">{ this.props.task.text }</span>
+        <div className="text">{ this.props.task.text }</div>
 
-        <span className='task-author margin-left-10'>-{ this.props.task.username }</span>
+        <div className='task-author margin-left-10'>added by: { this.props.task.username } @ { moment(this.props.task.createdAt).format('k:mm MM/DD/YYYY') }</div>
 
-        <span className="task-added margin-left-10">{ moment(this.props.task.createdAt).format('k:mm MM/DD/YYYY') }</span>
+        { this.props.task.isChecked &&
+
+          <div style={ completedStyle }>completed by: { this.props.task.completedBy } @ { moment(this.props.task.completedAt).format('k:mm MM/DD/YYYY')}</div>
+
+        }
 
       </li>
     )

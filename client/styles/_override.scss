@@ -93,3 +93,16 @@ button:focus {
 input {
   border-bottom: none !important;
 }
+
+.button-collapse {
+  color: black;
+}
+
+.side-nav {
+  transition: all .5s ease;
+
+  li:hover {
+    color: white;
+    background-color: black;
+  }
+}
