@@ -28,10 +28,18 @@ export default class NavDropdownButton extends Component {
     }
 
     return this.props.options.map((option) => (
-      <li key={option.text.toString()}>
-        {option.path === '/' ?
-          <IndexLink to={option.path} activeClassName="active">{option.text}</IndexLink> :
-          <Link to={option.path} activeClassName="active">{option.text}</Link>
+      <li key={ option.text.toString() } onClick={ this.toggleDropdown }>
+        { option.path === '/' ?
+
+          <IndexLink
+            to={ option.path }
+            activeClassName="active"
+          >{ option.text }</IndexLink> :
+
+          <Link
+            to={{ pathname: option.path, query: option.query }}
+            activeClassName="active"
+          >{ option.text }</Link>
         }
       </li>
     ))

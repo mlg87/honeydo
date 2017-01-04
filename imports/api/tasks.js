@@ -7,6 +7,14 @@ export const Task = _Base.inherit({
   name: 'Task',
   collection: Tasks,
   fields: {
+    listId: {
+      type: String,
+      validators: [
+        {
+          type: 'required'
+        }
+      ]
+    },
     text: {
       type: String,
       validators: [

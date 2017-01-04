@@ -3,8 +3,9 @@ import { Task } from '../imports/api/tasks'
 
 Meteor.methods({
   // TODO: figure out how to get validation to work
-  'tasks.insert' (text) {
+  'tasks.insert' (text, listId) {
     check(text, String)
+    check(listId, String)
     // err if user not logged in
     if (!this.userId) {
       throw new Meteor.Error('not-authorized')
@@ -17,7 +18,8 @@ Meteor.methods({
     task.set({
       text: text,
       userId: user._id,
-      username: user.username
+      username: user.username,
+      listId: listId
     })
     // if (!task.validate()) {
     //   throw new Meteor.Error('not-valid')

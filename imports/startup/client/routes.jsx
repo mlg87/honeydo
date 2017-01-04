@@ -6,7 +6,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 // app container
 import { AppLayout } from '../../ui/layouts/AppLayout'
 // components
-import TaskBoard from '../../ui/TaskBoard'
+import TaskBoardContainer from '../../ui/TaskBoard'
 import ListBoardContainer from '../../ui/ListBoard'
 // not found
 import { NotFound } from '../../ui/pages/not-found'
@@ -14,8 +14,14 @@ import { NotFound } from '../../ui/pages/not-found'
 const routes = {
   path: '/',
   component: AppLayout,
-  indexRoute: { component: TaskBoard },
+  indexRoute: {
+    component: NotFound,
+  },
   childRoutes: [
+    {
+      path: 'tasks',
+      component: TaskBoardContainer
+    },
     {
       path: 'lists',
       component: ListBoardContainer
@@ -29,28 +35,43 @@ const routes = {
     },
     {
       path: '*',
-      component: NotFound}
+      component: NotFound
+    }
   ]
 }
 
 // react router way #1
-Meteor.startup( () => {
-  render(
-    <Router history={ browserHistory } routes={ routes } />, document.getElementById( 'react-root' )
-  )
-})
-
-// react router way #2
 // Meteor.startup( () => {
 //   render(
-//     <Router history={ browserHistory }>
-//       <Route path='/' component={ AppLayout }>
-//         <IndexRoute component={ TaskBoard } />
-//         <Route path='/profile' component={ ListBoard } />
-//         {/* similar to express, this 404 route needs to be the last route (its a last resort) */}
-//         <Route path='*' component={ NotFound } />
-//       </Route>
-//     </Router>,
-//     document.getElementById( 'react-root' )
+//     <Router history={ browserHistory } routes={ routes } />, document.getElementById( 'react-root' )
 //   )
 // })
+
+// react router way #2
+Meteor.startup( () => {
+  render(
+    <Router history={ browserHistory }>
+
+      <Route path='/' component={ AppLayout }>
+
+        <IndexRoute component={ NotFound } />
+
+        <Route path='/tasks' component={ TaskBoardContainer } />
+
+        <Route path='/lists' component={ ListBoardContainer } />
+
+        <Route path='/logout' onEnter={({ params }, replace) => {
+            Meteor.logout()
+            replace('/')
+          }
+        } />
+
+        {/* similar to express, this 404 route needs to be the last route (its a last resort) */}
+        <Route path='*' component={ NotFound } />
+
+      </Route>
+
+    </Router>,
+    document.getElementById( 'react-root' )
+  )
+})

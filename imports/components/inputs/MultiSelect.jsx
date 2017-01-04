@@ -21,19 +21,6 @@ export class MultiSelect extends Component {
     $(this.refs.multiSelect).material_select()
   }
 
-  // handleChange(e) {
-  //   console.log('dafuq is e', e);
-  //   console.log('dafuq is this', this);
-  //   console.log('args', arguments);
-  //   const val = $(this.refs.multiSelect).val()
-  //   console.log('val', val);
-  //   return
-  //   this.setState({value: e.target.value})
-  //   if (this.props.onChange) {
-  //     this.props.onChange(this.state.value)
-  //   }
-  // }
-
   getSubmitStyle() {
     return {
       left: (this.state.formWidth - this.state.submitWidth) + 'px'

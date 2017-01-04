@@ -22,6 +22,10 @@ export const User = _Base.inherit({
     emails: {
       type: [_email],
       default: []
+    },
+    mostRecentListId: {
+      type: String,
+      optional: true
     }
   }
 });

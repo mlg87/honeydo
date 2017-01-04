@@ -3,8 +3,11 @@ import ReactDOM from 'react-dom'
 import { createContainer } from 'meteor/react-meteor-data'
 // collections
 import { Tasks } from '../api/tasks'
+import { Lists } from '../api/lists'
+import { UserActivities } from '../api/userActivities'
 // components
 import Task from './Task'
+import { SingleSelect } from '../components/inputs/SingleSelect'
 
 // App component - represents the whole app
 class TaskBoard extends Component {
@@ -13,8 +16,17 @@ class TaskBoard extends Component {
     super(props)
 
     this.state = {
-      hideCompleted: false
+      hideCompleted: false,
+      selectedList: new ReactiveVar()
     }
+
+    this.handleListChange = this.handleListChange.bind(this)
+    this.onSingleSelectMount = this.onSingleSelectMount.bind(this)
+  }
+
+  componentWillUnmount() {
+    // reset the listId session var
+    Session.set('listId', null)
   }
 
   handleSubmit(e) {
@@ -25,7 +37,7 @@ class TaskBoard extends Component {
 
     // dont use arrow function here b/c we dont want it to bind
     // to react
-    Meteor.call('tasks.insert', text, function(err, id) {
+    Meteor.call('tasks.insert', text, Session.get('listId'), function(err, id) {
       if (err) {
         alert(err.reason.reason)
       }
@@ -53,6 +65,27 @@ class TaskBoard extends Component {
     ))
   }
 
+  // list select nonsense
+  getListSelectOptions() {
+    const lists = this.props.lists
+    return lists.map((list) => {
+      return {
+        value: list._id,
+        placeholder: list.name
+      }
+    })
+  }
+
+  handleListChange(list) {
+    console.log('we are changing', list);
+    this.props.setListId(list)
+  }
+
+  onSingleSelectMount() {
+    // this is fucking hacky
+    Session.set('listId', this.props.lists[0]._id)
+  }
+
   render() {
     const completedPrompt = this.state.hideCompleted ? 'Show' : 'Hide'
 
@@ -62,6 +95,20 @@ class TaskBoard extends Component {
         { this.props.currentUser ?
 
           <header>
+
+            { this.props.isLoadingLists ?
+
+              <p>fetching lists...</p> :
+
+              <SingleSelect
+                options={ this.getListSelectOptions() }
+                label='List'
+                onChange={ this.props.setListId }
+                onSingleSelectMount={ this.onSingleSelectMount }
+              />
+
+            }
+
 
             <h1>Tasks To Complete ({ this.props.incompleteCount })</h1>
 
@@ -114,16 +161,43 @@ class TaskBoard extends Component {
 
 TaskBoard.propTypes = {
   tasks: PropTypes.array.isRequired,
+  lists: PropTypes.array.isRequired,
   incompleteCount: PropTypes.number.isRequired,
-  currentUser: PropTypes.object
+  currentUser: PropTypes.object,
+  isLoadingLists: PropTypes.bool,
+  isLoadingTasks: PropTypes.bool
 }
 
-export default createContainer(() => {
-  Meteor.subscribe('tasks')
+export default TaskBoardContainer = createContainer(({ params }) => {
+  const listSubscription = Meteor.subscribe('lists')
+  const isLoadingLists = !listSubscription.ready()
+  const taskSubscription = Meteor.subscribe('tasks')
+  const isLoadingTasks = !taskSubscription.ready()
+
+  const setListId = (listId) => {
+    Session.set('listId', listId)
+  }
+
+  const taskQuery = {
+    listId: Session.get('listId')
+  }
+  const tasks = Tasks.find(taskQuery, {sort: {createdAt: -1}}).fetch()
+  const incompleteCount = Tasks.find(_.assignIn(taskQuery, {isChecked: {$ne: true}})).count()
+
+  const listQuery = {
+    'users.userId': {
+      $in: [Meteor.userId()]
+    }
+  }
+  const lists = Lists.find(listQuery).fetch()
 
   return {
-    tasks: Tasks.find({userId: Meteor.userId()}, {sort: {createdAt: -1}}).fetch(),
-    incompleteCount: Tasks.find({userId: Meteor.userId(), isChecked: { $ne: true } }).count(),
-    currentUser: Meteor.user()
+    currentUser: Meteor.user(),
+    tasks,
+    lists,
+    incompleteCount,
+    setListId,
+    isLoadingLists,
+    isLoadingTasks
   }
 }, TaskBoard)

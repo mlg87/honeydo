@@ -168,8 +168,12 @@ class Nav extends Component {
           type: 'dropdown',
           options: [
             {
-              text: 'Task Board',
+              text: 'Home',
               path: '/'
+            },
+            {
+              text: 'Task Board',
+              path: '/tasks'
             },
             {
               text: 'Lists',

@@ -6,10 +6,15 @@ import Nav from '../Nav'
 export const AppLayout = ({children}) => {
   return (
     <div>
+
       <Nav />
+
       <div className="container">
+
         { children }
+
       </div>
+
     </div>
   )
 }
