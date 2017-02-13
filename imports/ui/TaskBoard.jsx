@@ -52,6 +52,14 @@ class TaskBoard extends Component {
     })
   }
 
+  removedCompleted() {
+    Meteor.call('lists.cleanList', Session.get('listId'), (err) => {
+      if (err) {
+        alert(err)
+      }
+    })
+  }
+
   // get the tasks on the dom
   renderTasks() {
     let filteredTasks = this.props.tasks
@@ -97,22 +105,30 @@ class TaskBoard extends Component {
               />
             }
             <h1>Tasks To Complete ({ this.props.incompleteCount })</h1>
-            <label className="hide-completed clickable">
-              <input
-                className="hidden"
-                type="checkbox"
-                readOnly
-                checked={ this.state.hideCompleted }
-                onClick={ this.toggleHideCompleted.bind(this) }
-                />
-              { completedPrompt } Completed
-            </label>
+            <div className='list-options'>
+              <label className='clickable'>
+                <input
+                  className="hidden"
+                  type="checkbox"
+                  readOnly
+                  checked={ this.state.hideCompleted }
+                  onClick={ this.toggleHideCompleted.bind(this) }
+                  />
+                { completedPrompt } Completed
+              </label>
+              <span> | </span>
+              <span
+                className='clickable'
+                onClick={ this.removedCompleted.bind(this) }>
+                Remove Completed
+              </span>
+            </div>
             {/* events are handled in React by listening directly on the html comp */}
             <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
               <input
                 type="text"
                 ref="textInput"
-                placeholder="Type to add new tasks"
+                placeholder="+ Type to add new tasks"
                 />
             </form>
           </header>

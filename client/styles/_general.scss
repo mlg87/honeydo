@@ -101,10 +101,6 @@ li.private {
   border-color: #ddd;
 }
 
-header .hide-completed {
-  float: right;
-}
-
 .toggle-private {
   margin-left: 5px;
 }
@@ -149,6 +145,15 @@ header .hide-completed {
 }
 
 // list classes
+.list-options {
+  margin-bottom: 20px;
+
+  label, span {
+    color: inherit;
+    font-size: inherit;
+  }
+}
+
 .list-delete {
   @extend .delete;
   font-size: 2em;
