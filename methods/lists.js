@@ -79,5 +79,21 @@ Meteor.methods({
     _.pullAllBy(_users, [{userId: userId}], 'userId')
     list.set('users', _users)
     list.save()
+  },
+  // soft deletes all tasks marked as done
+  'lists.cleanList' (listId) {
+    check(listId, String)
+    // err if user not logged in
+    if (!this.userId) {
+      throw new Meteor.Error('not-authorized')
+    }
+
+    const list = List.findOne({_id: listId})
+    if (!list) {
+      throw new Meteor.Error('not-found')
+    }
+
+    // update all tasks that are completed to
+    Task.update({listId: listId, isChecked: true}, {isDeleted: true}, {multi: true})
   }
 })

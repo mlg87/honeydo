@@ -59,6 +59,10 @@ export const Task = _Base.inherit({
     completedByUserId: {
       type: String,
       optional: true
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false
     }
   }
 });
