@@ -25,7 +25,7 @@ export default class Task extends Component {
     }
 
     return (
-      <li className={taskClassName + ' fader'}>
+      <li className={taskClassName + ' task fader'}>
 
         <button className="delete clickable" onClick={ this.deleteTask.bind(this) }>
           &times;

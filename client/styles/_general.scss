@@ -17,7 +17,7 @@ body {
 }
 
 .container {
-  max-width: 600px;
+  // max-width: 600px;
   margin: 0 auto;
   min-height: 100%;
   background: white;
@@ -109,6 +109,7 @@ header .hide-completed {
   margin-left: 5px;
 }
 
+// mobile screens
 @media (max-width: 600px) {
   li {
     padding: 12px 15px;

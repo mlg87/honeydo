@@ -1,0 +1,36 @@
+@media only screen
+  and (min-device-width: 414px)
+  and (max-device-width: 736px)
+  and (-webkit-min-device-pixel-ratio: 3) {
+
+  nav {
+    .brand-logo {
+      font-size: 4rem;
+    }
+
+  }
+
+  .container {
+    header {
+      font-size: 2rem;
+    }
+  }
+
+  .delete {
+    font-size: 4rem;
+  }
+
+  .task {
+    font-size: 2rem;
+  }
+
+  .checkbox-blue[type="checkbox"] + label:before {
+    height: 36px;
+    width: 36px;
+    border-width: 4px;
+  }
+
+  .hide-completed {
+    font-size: 1.5rem;
+  }
+}
